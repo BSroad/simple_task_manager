@@ -1,0 +1,13 @@
+{% extends "task_manager/base.html" %}
+{% block header %}
+  <div>
+    This is home page for Simple task Manager
+  </div>
+{% endblock header %}
+{% block content %}
+  <h2>
+      <a href="{% url 'task_manager:register' %}">Register an account</a>
+      to use Simple task manager app!
+  </h2>
+
+{% endblock content %}

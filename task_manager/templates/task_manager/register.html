@@ -1,0 +1,10 @@
+{% extends "task_manager/base.html" %}
+{% block content %}
+<form method="post" action="{% url 'task_manager:register' %}" >
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button name="submint">register</button>
+  <input type="hidden" name="next" value="{% url 'task_manager:index' %}" />
+</form>
+{% endblock content %}

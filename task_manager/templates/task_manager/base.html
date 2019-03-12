@@ -1,0 +1,17 @@
+
+    <title>Simple task manager</title>
+
+    <div>
+      <a class="navbar-brand" href="{% url 'task_manager:index' %}">
+      Home page
+      </a>
+    </div>
+    <div>
+      {% if user.is_authenticated %}
+        Hello, {{ user.username }}.
+        <a href="{% url 'task_manager:logout' %}">log out</a>
+      {% else %}
+        <a href="{% url 'task_manager:login' %}">log in</a>
+      {% endif %}
+     </div>
+{% block content %}{% endblock content %}
