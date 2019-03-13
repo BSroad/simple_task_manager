@@ -5,9 +5,12 @@
   </div>
 {% endblock header %}
 {% block content %}
-  <h2>
+  <div>
+      Go to <a href="{% url 'task_manager:task_view' %}">profile</a>
+  </div>
+  <h5>
       <a href="{% url 'task_manager:register' %}">Register an account</a>
       to use Simple task manager app!
-  </h2>
+  </h5>
 
 {% endblock content %}

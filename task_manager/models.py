@@ -9,6 +9,9 @@ class Employee(models.Model):
     is_manager = models.BooleanField(default=False)
     is_developer = models.BooleanField(default=False)
 
+
+    def __str__(self):
+        return self.user.username
 # class Manager(Person):
 #     class Meta:
 #         permissions = (

@@ -48,14 +48,22 @@ def employee_position_check(user):
         else:
             return False
     except:
-        return False
+        return None
 
 #
-# @login_required
+@login_required
 # @user_passes_test(employee_position_check, redirect_field_name='REDIRECT_FIELD_NAME')  # Set redirect_field_name=REDIRECT_FIELD_NAME
+
 def task_view(request):
     employee = models.Employee.objects.get(user=request.user)
     tasks = models.Task.objects.filter(assigned_person=employee)
-    return render(request, 'task_manager/task_view.html',
+    if employee_position_check(request.user) == False:
+        return render(request, 'task_manager/developer_task_view.html',
                   {'tasks': [entry for entry in tasks.values()]}) # Узнать длинну, поустой или нет
+    elif employee_position_check(request.user) == True:
+        return render(request, 'task_manager/manager_task_view.html',
+                  {'tasks': [entry for entry in tasks.values()]})
+    else:
+        return render(request, 'task_manager/index.html')
+
 

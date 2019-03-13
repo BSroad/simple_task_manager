@@ -1,0 +1,15 @@
+{% extends "task_manager/base.html" %}
+
+{% block content %}
+
+{% for task in tasks %}
+<ul>
+  <li>Task title: {{ task.title }}</li>
+  <li>Task description: {{ task.description }}</li>
+  <li>Due date of the task: {{ task.due_date }}</li>
+  <li>Task related to the project: {{task.project}}</li>
+  <li>Task assigned person:{{task.assigned_person}}</li>
+</ul>
+{% endfor %}
+
+{% endblock content %}
