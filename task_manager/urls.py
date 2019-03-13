@@ -20,5 +20,9 @@ urlpatterns = [
 
     # url for users to preview their profile (assigned tasks and projects)
     path('task_view/', views.task_view, name='task_view'),
+    path('tasks_for_user/', views.tasks_for_user, name= 'tasks_for_user'),
 
+    # REST-ish style request urls
+    path('developers_list/', views.developers_list, name='developers_list'),
+    path('all_projects/', views.all_projects, name='all_projects'),
 ]
