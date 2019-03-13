@@ -1,0 +1,12 @@
+{% extends "task_manager/base.html" %}
+{% block content %}
+<p>This is page of the Manager, {{ user.username }}.</p>
+
+Developers:
+{% for developer in developers %}
+<ul>
+  <li> <a href="">{{ developer }}</a></li>
+</ul>
+{% endfor %}
+
+{% endblock content %}

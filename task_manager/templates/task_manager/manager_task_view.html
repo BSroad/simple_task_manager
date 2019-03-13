@@ -1,4 +1,39 @@
 {% extends "task_manager/base.html" %}
 {% block content %}
-<p>This is page of the Manager, {{ user.username }}.</p>
+<h2>This is page of the Manager, {{ user.username }}.</h2>
+
+<h1>Personal tasks and projects info:</h1>
+
+{% for task in tasks %}
+<ul>
+  <li>Task title: {{ task.title }}</li>
+  <li>Task description: {{ task.description }}</li>
+  <li>Due date of the task: {{ task.due_date }}</li>
+  <li>Task related to the project: {{task.project}}</li>
+  <li>Task assigned person:{{task.assigned_person}}</li>
+</ul>
+{% endfor %}
+
+<h1>All Developers:</h1>
+{% for developer in developers %}
+<ul>
+  <li> <a href="">{{ developer }}</a></li>
+</ul>
+{% endfor %}
+
+
+<h1>All projects:</h1>
+{% for project in projects %}
+<ul>
+  <li> <a href="">{{ project }}</a></li>
+</ul>
+{% endfor %}
+
+<h1>All tasks:</h1>
+{% for t in all_tasks %}
+<ul>
+  <li> <a href="">{{ t }}</a></li>
+</ul>
+{% endfor %}
+
 {% endblock content %}

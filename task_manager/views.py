@@ -60,17 +60,27 @@ def task_view(request):
         tasks = models.Task.objects.filter(assigned_person=employee)
         length_dict = [len(entry) for entry in tasks.values()]
         dict = [entry for entry in tasks.values()]
+        developers = models.Employee.objects.filter(is_developer=True)
+        projects = models.Project.objects.all()
+        all_tasks = models.Task.objects.all()
+
+        print("!!!!!!!!!")
+        print(all_tasks)
         if employee_position_check(request.user) == False:
             if len(length_dict) > 0:
+
                 return render(request, 'task_manager/developer_task_view.html',
                       {'tasks': dict})
             else:
                 return render(request, 'task_manager/empty_task_view.html',)
         elif employee_position_check(request.user) == True:
             return render(request, 'task_manager/manager_task_view.html',
-                      {'tasks': [entry for entry in tasks.values()]})
+                      {'tasks': dict,'developers':developers,
+                       'projects': projects, 'all_tasks': all_tasks})
         else:
             return render(request, 'task_manager/index.html')
     except:
         return render(request, 'task_manager/index.html')
+
+
 
