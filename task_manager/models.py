@@ -12,6 +12,7 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.user.username
+
 # class Manager(Person):
 #     class Meta:
 #         permissions = (
@@ -34,8 +35,8 @@ class Task(models.Model):
     title = models.CharField(max_length=30, default='')
     description = models.CharField(max_length=200, default='')
     due_date = models.DateTimeField(auto_now_add=False)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    assigned_person = models.ForeignKey(Employee, on_delete=models.CASCADE,)
+    project = models.ManyToManyField(Project)
+    assigned_person = models.OneToOneField(Employee, on_delete=models.CASCADE,)
 
     def __str__(self):
         return self.title

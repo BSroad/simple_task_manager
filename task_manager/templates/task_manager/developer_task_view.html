@@ -1,6 +1,7 @@
 {% extends "task_manager/base.html" %}
 
 {% block content %}
+<p>This is page of the Developer, {{ user.username }}.</p>
 
 {% for task in tasks %}
 <ul>

@@ -48,22 +48,29 @@ def employee_position_check(user):
         else:
             return False
     except:
-        return None
+        return render(request, 'task_manager/index.html')
 
 #
 @login_required
 # @user_passes_test(employee_position_check, redirect_field_name='REDIRECT_FIELD_NAME')  # Set redirect_field_name=REDIRECT_FIELD_NAME
 
 def task_view(request):
-    employee = models.Employee.objects.get(user=request.user)
-    tasks = models.Task.objects.filter(assigned_person=employee)
-    if employee_position_check(request.user) == False:
-        return render(request, 'task_manager/developer_task_view.html',
-                  {'tasks': [entry for entry in tasks.values()]}) # Узнать длинну, поустой или нет
-    elif employee_position_check(request.user) == True:
-        return render(request, 'task_manager/manager_task_view.html',
-                  {'tasks': [entry for entry in tasks.values()]})
-    else:
+    try:
+        employee = models.Employee.objects.get(user=request.user)
+        tasks = models.Task.objects.filter(assigned_person=employee)
+        length_dict = [len(entry) for entry in tasks.values()]
+        dict = [entry for entry in tasks.values()]
+        if employee_position_check(request.user) == False:
+            if len(length_dict) > 0:
+                return render(request, 'task_manager/developer_task_view.html',
+                      {'tasks': dict})
+            else:
+                return render(request, 'task_manager/empty_task_view.html',)
+        elif employee_position_check(request.user) == True:
+            return render(request, 'task_manager/manager_task_view.html',
+                      {'tasks': [entry for entry in tasks.values()]})
+        else:
+            return render(request, 'task_manager/index.html')
+    except:
         return render(request, 'task_manager/index.html')
-
 
