@@ -81,7 +81,7 @@ def task_view(request):
     except:
         return render(request, 'task_manager/index.html')
 
-
+#######################################################################
 from django.http import JsonResponse
 
 
@@ -110,12 +110,33 @@ def developers_list(request):
             response_developers.append({"user_name": str(developer),"ID": developer.id})
         return JsonResponse({"developers": response_developers})
 
+
 # Return response about all projects in DB
 def all_projects(request):
     if request.method == "GET":
         projects = models.Project.objects.all()
         response_projects = []
         for project in projects:
-            print(project)
-            response_projects.append({"project": str(project),"ID": project.id})
+            response_projects.append({"project name": str(project),
+                                      "ID": project.project_uid})
         return JsonResponse({"projects": response_projects})
+
+
+# Return response about all tasks in DB
+def all_tasks(request):
+    if request.method == "GET":
+        all_tasks = models.Task.objects.all()
+        response_tasks = []
+        for task in all_tasks:
+             response_tasks.append({"task title": str(task),
+                                   "task id": task.task_id,
+                                   "related project": task.project.title,
+                                   "assigned person": task.assigned_person.get_id(),
+                                   "task description": task.description,
+                                   "due date": task.due_date,
+                                   })
+        return JsonResponse({"tasks": response_tasks})
+
+
+# функция, которая создаст нового usera --> employee
+#

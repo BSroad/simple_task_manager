@@ -25,4 +25,5 @@ urlpatterns = [
     # REST-ish style request urls
     path('developers_list/', views.developers_list, name='developers_list'),
     path('all_projects/', views.all_projects, name='all_projects'),
+    path('all_tasks/', views.all_tasks, name='all_projects'),
 ]
