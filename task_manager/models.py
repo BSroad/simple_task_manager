@@ -2,8 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Person(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,)
+
+#     project = models.ManyToManyField(Project)
+    is_manager = models.BooleanField(default=False)
+    is_developer = models.BooleanField(default=False)
+
+# class Manager(Person):
+#     class Meta:
+#         permissions = (
+#             ("can_create", "Can create"),
+#             ("can_read", "Can read"),
+#             ("can_update", "Can update"),
+#             ("can_delete", "Can delete"))
 
 
 class Project(models.Model):
@@ -20,7 +32,7 @@ class Task(models.Model):
     description = models.CharField(max_length=200, default='')
     due_date = models.DateTimeField(auto_now_add=False)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    assigned_person = models.ForeignKey(Person, on_delete=models.CASCADE,)
+    assigned_person = models.ForeignKey(Employee, on_delete=models.CASCADE,)
 
     def __str__(self):
         return self.title
