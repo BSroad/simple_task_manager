@@ -3,14 +3,19 @@ from django.contrib.auth.models import User
 import uuid
 
 
+class EmployeeManager(models.Manager):
+    def create_new_user(self, user_internal, is_manager, is_developer):
+        new_user = self.create(user_internal=user_internal, is_manager=is_manager,
+                               is_developer=is_developer)
+
+
 class Employee(models.Model):
     user_internal = models.OneToOneField(User, on_delete=models.CASCADE)
-
-#     project = models.ManyToManyField(Project)
     is_manager = models.BooleanField(default=False)
     is_developer = models.BooleanField(default=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           editable=False)
+    objects = EmployeeManager()
 
     def __str__(self):
         return self.user_internal.username
@@ -19,7 +24,7 @@ class Employee(models.Model):
         return self.id
 
     def get_name(self):
-        self.user_internal.username
+        return self.user_internal.username
 
 
 class Project(models.Model):
