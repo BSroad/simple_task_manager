@@ -7,6 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from . import CRUD_user_module as crud_u
+from . import CRUD_employee_module as crud_e
+from . import CRUD_project_module as crud_p
 import json
 
 from . import models
@@ -103,7 +106,7 @@ def task_view(request):
         return render(request, 'task_manager/index.html')
 
 
-#######################################################################
+###################### REST responses #################################
 from django.http import JsonResponse
 
 
@@ -144,85 +147,48 @@ def all_tasks(request):
         return JsonResponse({"tasks": response_tasks})
 
 
-def create_new_employee(request):
-    if request.method == "POST":
-        received_json_data = json.loads(request.body)
-        user_internal = received_json_data["user_internal"]
-        if user_internal is not None:
-            user_internal_object = models.User.objects.get(username = received_json_data["user_internal"])
-            try:
-                new_user = models.Employee.objects.create_new_user(user_internal_object,
-                                                                   received_json_data["is_manager"],
-                                                                   received_json_data["is_developer"])
-                new_user.save()
-            except IntegrityError as e:
-                return JsonResponse({"error" : "Employee with this user already exists"})
-            return JsonResponse({"new user id ": str(new_user.get_id())})
-        else:
-            return JsonResponse({"error" : "User doesn't exist"})
-    return JsonResponse({"error" : "Try POST request"})
-
-
-def create_new_user(request):
-    received_json_data = json.loads(request.body)
-    if not all(keys in received_json_data for keys in ("username", "email", "password")):
-        return JsonResponse({"error" : "request doesn't contain username, email, or password"})
-    try:
-        user = User.objects.create_user(username=received_json_data["username"],
-                                        email=received_json_data["email"],
-                                        password=received_json_data["password"])
-        user.save()
-        return JsonResponse({"username": user.username })
-    except IntegrityError as e:
-        return JsonResponse(
-            {"error": "User with this username already exists"})
-
-
-def update_user(request):
-    received_json_data = json.loads(request.body)
-    username = received_json_data["username"]
-    user = User.objects.get(username=username)
-    if user is None:
-        return JsonResponse({"error" : "User with this name does not exist"})
-    if "email" in received_json_data:
-        email = received_json_data["email"]
-        user.email = email
-    if "password" in received_json_data:
-        password = received_json_data["password"]
-        user.password = password
-    user.save()
-    return JsonResponse({"username": user.username, "email":user.email})
-
-
-def delete_user(request):
-    received_json_data = json.loads(request.body)
-    username = received_json_data["username"]
-    user = User.objects.get(username=username)
-    if user is None:
-        return JsonResponse({"error": "User with this name does not exist"})
-    user.delete()
-    return JsonResponse({"success" : True})
-
-
-def get_user(request):
-    received_json_data = json.loads(request.body)
-    username = received_json_data["username"]
-    user = User.objects.get(username=username)
-    if user is None:
-        return JsonResponse({"error": "User with this name does not exist"})
-    return JsonResponse({"username": user.username, "email": user.email})
-
-
 def CRUD_user(request):
     if request.method == "POST":
-        return create_new_user(request)
+        return crud_u.create_new_user(request)
 
     if request.method == "PUT":
-        return update_user(request)
+        return crud_u.update_user(request)
 
     if request.method == "DELETE":
-        return delete_user(request)
+        return crud_u.delete_user(request)
 
     if request.method == "GET":
-        return get_user(request)
+        return crud_u.get_user(request)
     return JsonResponse({"error" : "wrong HTTP request type"})
+
+
+def CRUD_employee(request):
+    if request.method == "POST":
+        return crud_e.create_new_employee(request)
+
+    if request.method == "PUT":
+        return crud_e.update_employee(request)
+
+    if request.method == "DELETE":
+        return crud_e.delete_employee(request)
+
+    if request.method == "GET":
+        return crud_e.get_employee(request)
+    return JsonResponse({"error" : "wrong HTTP request type"})
+
+
+def CRUD_project(request):
+    if request.method == "POST":
+        return crud_p.create_new_project(request)
+
+    if request.method == "PUT":
+        return crud_p.update_project(request)
+
+    if request.method == "DELETE":
+        return crud_p.delete_project(request)
+
+    if request.method == "GET":
+        return crud_p.get_project(request)
+    return JsonResponse({"error": "wrong HTTP request type"})
+
+

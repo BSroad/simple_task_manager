@@ -5,6 +5,7 @@ from . import views
 from . import forms
 
 
+
 app_name = 'task_manager'
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
     path('all_projects/', views.all_projects, name='all_projects'),
     path('all_tasks/', views.all_tasks, name='all_tasks'),
     path('crud_user/', views.CRUD_user, name='crud_user'),
-    path('create_new_employee/', views.create_new_employee, name='create_new_user'),
+    path('crud_employee/', views.CRUD_employee, name='crud_employee'),
+    path('crud_project/', views.CRUD_project, name='crud_project'),
 ]
